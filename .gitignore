@@ -1,0 +1,5 @@
+# Inicializa el repositorio local
+git init
+
+# Crea un archivo .gitignore y añade .DS_Store a la lista de ignorados
+echo ".DS_Store" > .gitignore
