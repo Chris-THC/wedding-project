@@ -9451,9 +9451,10 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 
-/********** Template CSS ************/
 .font-secondary {
-  font-family: 'Great Vibes', cursive;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-style: normal;
 }
 
 .btn-square {
@@ -9761,4 +9762,79 @@ a.text-dark:hover, a.text-dark:focus {
   #event .border-right {
     border-right: none !important;
   }
+}
+
+.separador-titulo {
+  display: inline-block;
+  text-align: center;
+}
+
+.separador-titulo img {
+  width: 380px;
+  max-width: 90%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.boton-derecha-personalizado {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.boton-derecha-personalizado:hover {
+  transform: scale(1.1);
+}
+.boton-izquierda-personalizado {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.boton-izquierda-personalizado:hover {
+  transform: scale(1.1);
+}
+
+.boton-confirmar-imagen {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.boton-confirmar-imagen img {
+  display: block;
+  width: 230px;
+  height: auto;
+  max-width: 100%;
+}
+
+.pase-invitacion-carrusel {
+  display: inline-block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.pase-invitacion-carrusel img {
+  display: block;
+  width: 380px;
+  max-width: 100%;
+  height: auto;
+}
+
+.titulo-aniversario {
+  font-family: "Cinzel", serif;
+  font-weight: 500;
+  letter-spacing: 3px !important;
+}
+
+.texto-reserva {
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
