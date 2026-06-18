@@ -112,6 +112,36 @@
             }
         }
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+            const formAsistencia = document.getElementById('form-asistencia');
+
+            if (formAsistencia) {
+                formAsistencia.addEventListener('submit', function(event) {
+                    // Evitar la recarga de la página
+                    event.preventDefault();
+
+                    // Obtener los datos del formulario
+                    const formData = new FormData(formAsistencia);
+
+                    // Generar la estructura JSON
+                    const rsvpData = {
+                        nombre: formData.get('nombre'),
+                        telefono: formData.get('telefono'),
+                        asistira: formData.get('asistira') === 'true',
+                        cantidadPases: parseInt(formData.get('cantidadPases'), 10),
+                        mensaje: formData.get('mensaje')
+                    };
+
+                    // Mostrar el JSON en la consola
+                    console.log(JSON.stringify(rsvpData, null, 2));
+
+                    // Opcional: Feedback visual y limpieza
+                    alert("¡Gracias! Tu confirmación ha sido registrada. (Revisa la consola del navegador)");
+                    formAsistencia.reset();
+                });
+            }
+        });
     
 })(jQuery);
 
