@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <title>Reporte de Asistencia - Alma & Alejandro</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="img/favicon.ico" rel="icon"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&family=Raleway:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+<div class="container-fluid banner-cielo py-4 px-4">
+    <div class="text-center mb-4">
+        <button id="btn-download" class="btn btn-dark mb-3">
+            <i class="fas fa-file-pdf mr-2"></i>Descargar PDF
+        </button>
+        <h1 class="font-secondary" style="font-size: 3rem;">Alma <span>&</span> Alejandro</h1>
+        <h5 class="text-uppercase" style="letter-spacing: 3px;">Reporte de Asistencia</h5>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body py-3">
+                    <h6 class="text-muted text-uppercase mb-1" style="letter-spacing: 1px;">Total Confirmados</h6>
+                    <h2 id="total-registros" class="font-weight-bold mb-0">—</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-3 mt-md-0">
+            <div class="card text-center shadow-sm">
+                <div class="card-body py-3">
+                    <h6 class="text-muted text-uppercase mb-1" style="letter-spacing: 1px;">Asistirán</h6>
+                    <h2 id="total-asisten" class="font-weight-bold mb-0">—</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-3 mt-md-0">
+            <div class="card text-center shadow-sm">
+                <div class="card-body py-3">
+                    <h6 class="text-muted text-uppercase mb-1" style="letter-spacing: 1px;">Total Pases</h6>
+                    <h2 id="total-pases" class="font-weight-bold mb-0">—</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="print-area">
+        <div class="text-center mb-3">
+            <h4 class="font-secondary" style="font-size:2rem">Alma & Alejandro — Reporte de Asistencia</h4>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4 text-center"><strong>Total Confirmados:</strong> <span id="print-total-registros">—</span>
+            </div>
+            <div class="col-4 text-center"><strong>Asistirán:</strong> <span id="print-total-asisten">—</span></div>
+            <div class="col-4 text-center"><strong>Total Pases:</strong> <span id="print-total-pases">—</span></div>
+        </div>
+        <div class="table-responsive shadow-sm">
+            <table class="table table-bordered table-hover bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>¿Asistirá?</th>
+                    <th>Pases</th>
+                    <th>Mensaje</th>
+                </tr>
+                </thead>
+                <tbody id="tabla-rsvp">
+                <tr>
+                    <td colspan="6" class="text-center py-4">Cargando registros...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import {initializeApp} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    import {getFirestore, collection, getDocs} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD7Seqq8MBwwGNtJqtkNwyVMK24L0qbcmw",
+        authDomain: "proyectoboda-cbb00.firebaseapp.com",
+        projectId: "proyectoboda-cbb00",
+        storageBucket: "proyectoboda-cbb00.firebasestorage.app",
+        messagingSenderId: "1024457547452",
+        appId: "1:1024457547452:web:dbc9a89354f3e46e4fbab9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const snapshot = await getDocs(collection(db, 'rsvp'));
+    const tbody = document.getElementById('tabla-rsvp');
+    tbody.innerHTML = '';
+
+    let totalAsisten = 0, totalPases = 0;
+
+    if (snapshot.empty) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No hay registros aún.</td></tr>';
+    } else {
+        snapshot.forEach((doc, i) => {
+            const d = doc.data();
+            if (d.asistira) {
+                totalAsisten++;
+                totalPases += d.cantidadPases || 0;
+            }
+            tbody.innerHTML += `
+            <tr>
+              <td>${tbody.children.length + 1}</td>
+              <td>${d.nombre || '—'}</td>
+              <td>${d.telefono || '—'}</td>
+              <td>${d.asistira ? '<span class="badge badge-success">Sí</span>' : '<span class="badge badge-danger">No</span>'}</td>
+              <td class="text-center">${d.cantidadPases || '—'}</td>
+              <td>${d.mensaje || '—'}</td>
+            </tr>`;
+        });
+    }
+
+    document.getElementById('total-registros').textContent = snapshot.size;
+    document.getElementById('total-asisten').textContent = totalAsisten;
+    document.getElementById('total-pases').textContent = totalPases;
+    document.getElementById('print-total-registros').textContent = snapshot.size;
+    document.getElementById('print-total-asisten').textContent = totalAsisten;
+    document.getElementById('print-total-pases').textContent = totalPases;
+
+    const registros = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    console.log('Registros RSVP:', registros);
+
+    document.getElementById('btn-download').addEventListener('click', () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('Alma & Alejandro - Reporte de Asistencia', 14, 16);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text(`Total Confirmados: ${snapshot.size}   |   Asistirán: ${totalAsisten}   |   Total Pases: ${totalPases}`, 14, 24);
+
+        doc.autoTable({
+            startY: 30,
+            head: [['#', 'Nombre', 'Teléfono', '¿Asistirá?', 'Pases', 'Mensaje']],
+            body: registros.map((d, i) => [
+                i + 1,
+                d.nombre || '—',
+                d.telefono || '—',
+                d.asistira ? 'Sí' : 'No',
+                d.cantidadPases || '—',
+                d.mensaje || '—'
+            ]),
+            styles: { fontSize: 9 },
+            headStyles: { fillColor: [18, 31, 56] }
+        });
+
+        doc.save('reporte-asistencia.pdf');
+    });
+</script>
+</body>
+</html>
