@@ -480,6 +480,8 @@
           await addDoc(collection(db, 'rsvp'), rsvpData);
           alert('¡Gracias! Tu confirmación ha sido registrada.');
           this.reset();
+          const mensaje = encodeURIComponent(`Confirmo asistencia para ${rsvpData.cantidadPases} a nombre de ${rsvpData.nombre}.`);
+          window.open(`https://wa.me/522717308042?text=${mensaje}`, '_blank');
         } catch (e) {
           alert('Hubo un error al enviar tu confirmación. Intenta de nuevo.');
           console.error(e);
