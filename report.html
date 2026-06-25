@@ -23,7 +23,7 @@
         <h5 class="text-uppercase" style="letter-spacing: 3px; color: #0d6efd;">Reporte de Asistencia</h5>
     </div>
 
-    <div class="row mb-3">
+    <div class="row mb-3 justify-content-center">
         <div class="col-md-4">
             <div class="card text-center shadow-sm">
                 <div class="card-body py-3">
@@ -40,25 +40,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mt-3 mt-md-0">
-            <div class="card text-center shadow-sm">
-                <div class="card-body py-3">
-                    <h6 class="text-muted text-uppercase mb-1" style="letter-spacing: 1px;">Total Pases</h6>
-                    <h2 id="total-pases" class="font-weight-bold mb-0">—</h2>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div id="print-area">
         <div class="text-center mb-3">
             <h4 class="font-secondary" style="font-size:2rem">Lista de invitados</h4>
         </div>
-        <div class="row mb-3">
-            <div class="col-4 text-center"><strong>Total Confirmados:</strong> <span id="print-total-registros">—</span>
-            </div>
+        <div class="row mb-3 justify-content-center">
+            <div class="col-4 text-center"><strong>Total Confirmados:</strong> <span id="print-total-registros">—</span></div>
             <div class="col-4 text-center"><strong>Asistirán:</strong> <span id="print-total-asisten">—</span></div>
-            <div class="col-4 text-center"><strong>Total Pases:</strong> <span id="print-total-pases">—</span></div>
         </div>
         <div class="table-responsive shadow-sm">
             <table class="table table-bordered table-hover bg-white">
@@ -102,7 +92,7 @@
     const tbody = document.getElementById('tabla-rsvp');
     tbody.innerHTML = '';
 
-    let totalAsisten = 0, totalPases = 0;
+    let totalConfirmados = 0, totalAsisten = 0;
 
     if (snapshot.empty) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No hay registros aún.</td></tr>';
@@ -110,8 +100,8 @@
         snapshot.forEach((doc, i) => {
             const d = doc.data();
             if (d.asistira) {
-                totalAsisten++;
-                totalPases += d.cantidadPases || 0;
+                totalConfirmados++;
+                totalAsisten += d.cantidadPases || 0;
             }
             tbody.innerHTML += `
             <tr>
@@ -125,12 +115,10 @@
         });
     }
 
-    document.getElementById('total-registros').textContent = snapshot.size;
+    document.getElementById('total-registros').textContent = totalConfirmados;
     document.getElementById('total-asisten').textContent = totalAsisten;
-    document.getElementById('total-pases').textContent = totalPases;
-    document.getElementById('print-total-registros').textContent = snapshot.size;
+    document.getElementById('print-total-registros').textContent = totalConfirmados;
     document.getElementById('print-total-asisten').textContent = totalAsisten;
-    document.getElementById('print-total-pases').textContent = totalPases;
 
     const registros = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
     console.log('Registros RSVP:', registros);
@@ -145,7 +133,7 @@
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
-        doc.text(`Total Confirmados: ${snapshot.size}   |   Asistirán: ${totalAsisten}   |   Total Pases: ${totalPases}`, 14, 24);
+        doc.text(`Total Confirmados: ${totalConfirmados}   |   Asistirán: ${totalAsisten}`, 14, 24);
 
         doc.autoTable({
             startY: 30,
