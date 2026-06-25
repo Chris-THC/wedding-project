@@ -11,7 +11,7 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&family=Raleway:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&family=Raleway:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
@@ -450,5 +450,41 @@
     <script src="lib/lightbox/js/lightbox.min.js"></script>
 
     <script src="js/main.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyD7Seqq8MBwwGNtJqtkNwyVMK24L0qbcmw",
+        authDomain: "proyectoboda-cbb00.firebaseapp.com",
+        projectId: "proyectoboda-cbb00",
+        storageBucket: "proyectoboda-cbb00.firebasestorage.app",
+        messagingSenderId: "1024457547452",
+        appId: "1:1024457547452:web:dbc9a89354f3e46e4fbab9"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      document.getElementById('form-asistencia').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const rsvpData = {
+          nombre: formData.get('nombre'),
+          telefono: formData.get('telefono'),
+          asistira: formData.get('asistira') === 'true',
+          cantidadPases: parseInt(formData.get('cantidadPases'), 10),
+          mensaje: formData.get('mensaje')
+        };
+        try {
+          await addDoc(collection(db, 'rsvp'), rsvpData);
+          alert('¡Gracias! Tu confirmación ha sido registrada.');
+          this.reset();
+        } catch (e) {
+          alert('Hubo un error al enviar tu confirmación. Intenta de nuevo.');
+          console.error(e);
+        }
+      });
+    </script>
   </body>
 </html>
