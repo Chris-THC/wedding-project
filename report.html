@@ -27,7 +27,7 @@
         <div class="col-md-4">
             <div class="card text-center shadow-sm">
                 <div class="card-body py-3">
-                    <h6 class="text-muted text-uppercase mb-1" style="letter-spacing: 1px;">Total Confirmados</h6>
+                    <h6 class="text-muted text-uppercase mb-1" style="letter-spacing: 1px;">Total de Invitaciones Confirmadas</h6>
                     <h2 id="total-registros" class="font-weight-bold mb-0">—</h2>
                 </div>
             </div>
@@ -47,7 +47,7 @@
             <h4 class="font-secondary" style="font-size:2rem">Lista de invitados</h4>
         </div>
         <div class="row mb-3 justify-content-center">
-            <div class="col-4 text-center"><strong>Total Confirmados:</strong> <span id="print-total-registros">—</span></div>
+            <div class="col-4 text-center"><strong>Total de Invitaciones Confirmadas:</strong> <span id="print-total-registros">—</span></div>
             <div class="col-4 text-center"><strong>Asistirán:</strong> <span id="print-total-asisten">—</span></div>
         </div>
         <div class="table-responsive shadow-sm">
@@ -133,7 +133,7 @@
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
-        doc.text(`Total Confirmados: ${totalConfirmados}   |   Asistirán: ${totalAsisten}`, 14, 24);
+        doc.text(`Total de Invitaciones Confirmadas: ${totalConfirmados}   |   Asistirán: ${totalAsisten}`, 14, 24);
 
         doc.autoTable({
             startY: 30,
