@@ -107,7 +107,7 @@
 
                 <div class="rounded p-3 mb-1 d-flex flex-column align-items-center shadow-sm">
                   <p class="text-white m-0 texto-reserva" style="font-size: 1.1rem">
-                    Te hemos reservado 2 pases
+                    Te hemos reservado <span class="texto-pases">2</span> pases
                   </p>
 
                 </div>
@@ -161,7 +161,7 @@
 
                 <div class="rounded p-3 mb-1 d-flex flex-column align-items-center shadow-sm">
                   <p class="text-white m-0 texto-reserva" style="font-size: 1.1rem">
-                    Te hemos reservado 2 pases
+                    Te hemos reservado <span class="texto-pases">2</span> pases
                   </p>
 
                 </div>
@@ -217,7 +217,7 @@
 
                 <div class="rounded p-3 mb-1 d-flex flex-column align-items-center shadow-sm">
                   <p class="text-white m-0 texto-reserva" style="font-size: 1.1rem">
-                    Te hemos reservado 2 pases
+                    Te hemos reservado <span class="texto-pases">2</span> pases
                   </p>
 
                 </div>
@@ -468,6 +468,7 @@
       const db = getFirestore(app);
 
       const maxPases = parseInt(new URLSearchParams(window.location.search).get('max'), 10) || 2;
+      document.querySelectorAll('.texto-pases').forEach(el => el.textContent = maxPases);
       const cantidadPases = document.getElementById('cantidadPases');
 
       for (let i = 3; i <= maxPases; i++) {
