@@ -468,7 +468,10 @@
       const db = getFirestore(app);
 
       const maxPases = parseInt(new URLSearchParams(window.location.search).get('max'), 10) || 2;
-      document.querySelectorAll('.texto-pases').forEach(el => el.textContent = maxPases);
+      document.querySelectorAll('.texto-pases').forEach(el => {
+        el.textContent = maxPases;
+        el.nextSibling.textContent = maxPases >= 2 ? ' pases' : ' pase';
+      });
       const cantidadPases = document.getElementById('cantidadPases');
 
       for (let i = 3; i <= maxPases; i++) {
