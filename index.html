@@ -467,16 +467,32 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
+      const maxPases = parseInt(new URLSearchParams(window.location.search).get('max'), 10) || 2;
+      const cantidadPases = document.getElementById('cantidadPases');
+
+      for (let i = 3; i <= maxPases; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = `${i} asistentes`;
+        cantidadPases.appendChild(opt);
+      }
+
+      // Hide all numeric options on load until asistira is selected
+      Array.from(cantidadPases.options).forEach(o => {
+        if (o.value !== '') o.hidden = true;
+      });
+
       document.getElementById('asistira').addEventListener('change', function() {
-        const cantidadPases = document.getElementById('cantidadPases');
-        const options = cantidadPases.querySelectorAll('option[value="0"], option[value="1"], option[value="2"]');
-        if (this.value === 'false') {
-          options.forEach(o => o.hidden = o.value !== '0');
-          cantidadPases.value = '0';
-        } else {
-          options.forEach(o => o.hidden = o.value === '0');
-          cantidadPases.value = '';
-        }
+        Array.from(cantidadPases.options).forEach(o => {
+          if (o.value === '') return;
+          const v = parseInt(o.value);
+          if (this.value === 'false') {
+            o.hidden = v !== 0;
+          } else {
+            o.hidden = v === 0 || v > maxPases;
+          }
+        });
+        cantidadPases.value = this.value === 'false' ? '0' : '';
       });
 
       document.getElementById('form-asistencia').addEventListener('submit', async function(event) {
